@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Grind Calculator</title>
+
+<style>
+body{
+    background:#121212;
+    color:white;
+    font-family:Arial, sans-serif;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+}
+
+.card{
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+h1{
+    text-align:center;
+}
+
+label{
+    display:block;
+    margin-top:12px;
+    margin-bottom:5px;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    background:#2b2b2b;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.result{
+    font-size:20px;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Secret Grind Calculator</h1>
+
+<div class="card">
+
+<label>Target Secret</label>
+<select id="secret">
+    <option>Aizen</option>
+    <option>Broly</option>
+    <option>Vegito</option>
+    <option>Minato</option>
+    <option>Mihawk</option>
+    <option>Naruto</option>
+    <option>Yoruichi</option>
+</select>
+
+<label>Base Luck</label>
+<input id="baseLuck" type="number" value="15">
+
+<button onclick="toggleAdvanced()">
+    Advanced Info
+</button>
+
+<div class="card" id="advancedInfo" style="display:none;">
+
+    <h2>Advanced Info</h2>
+
+    <div class="result" id="expectedOpens">
+        Expected Opens: --
+    </div>
+
+    <div class="result" id="totalLuckDisplay">
+        Total Luck: --
+    </div>
+
+    <div class="result" id="speedMultiplierDisplay">
+        Speed Multiplier: --
+    </div>
+
+    <div class="result" id="openTimeDisplay">
+        Open Time: --
+    </div>
+
+    <div class="result" id="starsPerHourDisplay">
+        Stars Per Hour: --
+    </div>
+
+    <div class="result" id="luckPotionsNeeded">
+    Luck Potions Needed: --
+</div>
+
+<div class="result" id="speedPotionsNeeded">
+    Speed Potions Needed: --
+</div>
+
+</div>
+
+<label>Luck Potion</label>
+<select id="luckPotion">
+    <option>None</option>
+    <option>Luck Boost</option>
+    <option>Super Luck</option>
+    <option>Ultra Luck</option>
+    <option>Summer Luck I</option>
+    <option>Summer Luck II</option>
+    <option>Summer Luck III</option>
+</select>
+
+<label>
+    <input type="checkbox" id="secretGamepass">
+    Secret Gamepass (+50% Secret Chance)
+</label>
+
+<label>
+    <input type="checkbox" id="vip">
+    VIP (-25% Star Cost)
+</label>
+
+<label>Playtime Boost</label>
+<select id="playtimeBoost">
+    <option value="0">I (+0%)</option>
+<option value="0.05">II (+5%)</option>
+<option value="0.10">III (+10%)</option>
+<option value="0.20">IV (+20%)</option>
+<option value="0.35">V (+35%)</option>
+<option value="0.55">VI (+55%)</option>
+</select>
+
+<label>Speed Potion</label>
+<select id="speedPotion">
+    <option value="0">None</option>
+
+    <option value="0.15">Speed I (+15%)</option>
+    <option value="0.35">Speed II (+35%)</option>
+    <option value="0.60">Speed III (+60%)</option>
+
+    <option value="0.20">Summer Speed I (+20%)</option>
+    <option value="0.40">Summer Speed II (+40%)</option>
+    <option value="0.65">Summer Speed III (+65%)</option>
+</select>
+
+<label>Mastery</label>
+<select id="mastery">
+    <option value="0">None (+0%)</option>
+    <option value="0.05">I (+5%)</option>
+    <option value="0.10">II (+10%)</option>
+    <option value="0.15">III (+15%)</option>
+    <option value="0.20">IV (+20%)</option>
+</select>
+
+<label>Open Amount</label>
+<input id="openAmount" type="number" min="3" max="11" value="11">
+<button onclick="calculate()">Calculate</button>
+</div>
+
+<div class="card">
+    <h2>Results</h2>
+
+    <div class="result" id="secretOdds">
+    Secret Odds: --
+</div>
+
+    <div class="result" id="estimatedTime">
+    Estimated Time: --
+</div>
+
+    <div class="result" id="expectedCost">
+    Expected Cost: --
+
+</div>
+</div>
+
+</div>
+<footer style="text-align:center; margin-top:40px; opacity:0.8;">
+    <p>Anime Warriors 3 Calculator v1.0</p>
+    <p>Made by Tray</p>
+    <p>Discord: ___.tragedy.___ | Roblox: tray_kagee</p>
+    <p>Estimated values only. Actual results may vary.</p>
+</footer>
+<script>
+
+const secrets = {
+
+    Aizen: {
+        baseChance: 0.00004166666,
+        starLuck: -0.25,
+        cost: 8000000
+    },
+
+    Broly: {
+        baseChance: 0.00009433962,
+        starLuck: 1,
+        cost: 40
+    },
+
+    Vegito: {
+        baseChance: 0.00008333333,
+        starLuck: 0.5,
+        cost: 950
+    },
+
+    Minato: {
+        baseChance: 0.00006666666,
+        starLuck: 0.2,
+        cost: 7500
+    },
+
+    Mihawk: {
+        baseChance: 0.00005624296,
+        starLuck: 0,
+        cost: 60000
+    },
+
+    Naruto: {
+        baseChance: 0.00004761904,
+        starLuck: -0.15,
+        cost: 500000
+    },
+
+    Yoruichi: {
+        baseChance: 0.00006060606,
+        starLuck: 0,
+        cost: 80
+    }
+
+};
+const luckPotions = {
+    "None": 0,
+    "Luck Boost": 1,
+    "Super Luck": 2,
+    "Ultra Luck": 3,
+    "Summer Luck I": 1.5,
+    "Summer Luck II": 2.5,
+    "Summer Luck III": 4
+};
+
+function formatMoney(num) {
+
+    function clean(value) {
+        return parseFloat(value.toFixed(2));
+    }
+
+    if (num >= 1e12)
+        return "$" + clean(num / 1e12) + "T";
+
+    if (num >= 1e9)
+        return "$" + clean(num / 1e9) + "B";
+
+    if (num >= 1e6)
+        return "$" + clean(num / 1e6) + "M";
+
+    if (num >= 1e3)
+        return "$" + clean(num / 1e3) + "K";
+
+    return "$" + Math.round(num);
+}
+
+function toggleAdvanced() {
+
+    const panel =
+        document.getElementById("advancedInfo");
+
+    if (panel.style.display === "none") {
+        panel.style.display = "block";
+    } else {
+        panel.style.display = "none";
+    }
+
+}
+
+function calculate() {
+
+    const secret = document.getElementById("secret").value;
+    const baseLuck = Number(document.getElementById("baseLuck").value);
+    const hasGamepass =
+    document.getElementById("secretGamepass").checked;
+
+const hasVip =
+    document.getElementById("vip").checked;
+
+const secretChance =
+    hasGamepass ? 0.5 : 0;
+
+    const data = secrets[secret];
+
+const potionName =
+    document.getElementById("luckPotion").value;
+
+const potionLuck =
+    luckPotions[potionName];
+
+const totalLuck =
+    baseLuck +
+    potionLuck +
+    data.starLuck;
+    
+    const openAmount =
+    Number(document.getElementById("openAmount").value);
+
+const playtimeBoost =
+    Number(document.getElementById("playtimeBoost").value);
+
+    const speedPotion =
+    Number(document.getElementById("speedPotion").value);
+
+    const mastery =
+    Number(document.getElementById("mastery").value);
+
+    
+
+let odds;
+
+if (totalLuck < (14 - data.starLuck)) {
+
+    odds = 100 /
+    (
+        data.baseChance *
+        1.037970360 *
+        (1 + secretChance) *
+        (1 + totalLuck * 0.1)
+    );
+
+} else {
+
+    odds = 100 /
+    (
+        data.baseChance *
+        1.037970360 *
+        (1 + secretChance) *
+        (1.7 + totalLuck * 0.05)
+    );
+
+}
+
+const speedMultiplier =
+    1 +
+    playtimeBoost +
+    speedPotion +
+    mastery;
+
+const adjustedOpenTime =
+    5.4 / speedMultiplier;
+
+const starsPerHour =
+    (openAmount / adjustedOpenTime) * 3600;
+
+const estimatedHours =
+    odds / starsPerHour;
+
+    const adjustedStarCost =
+    hasVip ? data.cost * 0.75 : data.cost;
+
+const expectedCost =
+    odds * adjustedStarCost;
+
+if (secret === "Yoruichi") {
+
+    document.getElementById("expectedCost").innerText =
+        "Expected Cost: " +
+        Math.round(expectedCost).toLocaleString() +
+        " Seashells";
+
+} else {
+
+    document.getElementById("expectedCost").innerText =
+        "Expected Cost: " +
+        formatMoney(expectedCost);
+
+}
+
+document.getElementById("secretOdds").innerText =
+    "Secret Odds: 1 in " + Math.round(odds).toLocaleString();
+    
+    const days = Math.floor(estimatedHours / 24);
+
+const remainingHours =
+    Math.floor(estimatedHours % 24);
+
+const minutes =
+    Math.round((estimatedHours % 1) * 60);
+
+let timeText = "";
+
+if (days > 0) {
+    timeText =
+        days + " Days " +
+        remainingHours + " Hours";
+} else {
+    timeText =
+        Math.floor(estimatedHours) +
+        " Hours " +
+        minutes + " Minutes";
+}
+
+document.getElementById("estimatedTime").innerText =
+    "Estimated Time: " + timeText;
+
+document.getElementById("expectedOpens").innerText =
+    "Expected Opens: " +
+    Math.round(odds).toLocaleString();
+
+document.getElementById("totalLuckDisplay").innerText =
+    "Total Luck: " +
+    totalLuck;
+
+document.getElementById("speedMultiplierDisplay").innerText =
+    "Speed Multiplier: " +
+    speedMultiplier.toFixed(2) + "x";
+
+document.getElementById("openTimeDisplay").innerText =
+    "Open Time: " +
+    adjustedOpenTime.toFixed(2) + "s";
+
+document.getElementById("starsPerHourDisplay").innerText =
+    "Stars Per Hour: " +
+    Math.round(starsPerHour).toLocaleString();
+
+    const potionsNeeded =
+    Math.ceil(estimatedHours * 4);
+
+if (potionName === "None") {
+
+    document.getElementById("luckPotionsNeeded").innerText =
+        "Luck Potions Needed: N/A";
+
+} else {
+
+    document.getElementById("luckPotionsNeeded").innerText =
+        "Luck Potions Needed: " +
+        potionsNeeded.toLocaleString();
+
+}
+
+if (speedPotion === 0) {
+
+    document.getElementById("speedPotionsNeeded").innerText =
+        "Speed Potions Needed: N/A";
+
+} else {
+
+    document.getElementById("speedPotionsNeeded").innerText =
+        "Speed Potions Needed: " +
+        potionsNeeded.toLocaleString();
+
+}
+}
+
+
+</script>
+
+</body>
+</html>
