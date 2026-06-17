@@ -3,13 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <title>Secret Grind Calculator</title>
 
+
 <style>
-body{
-    background:#121212;
+
+
+    .tooltip{
+    position:relative;
+
+    display:inline-block;
+
+    cursor:pointer;
+
+    color:#b69cff;
+
+    margin-left:6px;
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+.tooltip .tooltipText{
+    visibility:hidden;
+
+    width:250px;
+
+    background:#15151c;
+
     color:white;
-    font-family:Arial, sans-serif;
+
+    text-align:left;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(140,100,255,0.2);
+
+    box-shadow:
+        0 0 20px rgba(140,100,255,0.15);
+
+    position:absolute;
+
+    z-index:100;
+
+    left:120%;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    opacity:0;
+
+    transition:all 0.2s ease;
+}
+#resultsSection{
+    opacity:0;
+    transform:translateY(15px);
+    transition:all 0.4s ease;
+}
+
+#resultsSection.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.tooltip:hover .tooltipText{
+    visibility:visible;
+
+    opacity:1;
+}
+
+.checkboxRow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:16px;
+}
+
+.checkboxRow input{
+    width:auto;
+    margin:0;
+}
+
+.checkboxRow label{
+    width:auto;
+    margin:0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance:none;
+    margin:0;
+}
+
+input[type=number]{
+    appearance:textfield;
+    -moz-appearance:textfield;
+}
+
+    .logo{
+    display:block;
+
+    width:250px;
+
+    max-width:80%;
+
+    margin:0 auto 20px auto;
+
+    filter:
+        drop-shadow(0 0 15px rgba(140,100,255,0.25));
+}
+
+body{
+    background:#0b0b0f;
+    color:white;
+    font-family:'Inter', sans-serif;
     margin:0;
     padding:20px;
 }
@@ -20,15 +135,56 @@ body{
 }
 
 .card{
-    background:#1e1e1e;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:20px;
+    background:#15151c;
+    padding:24px;
+    border-radius:22px;
+    margin-bottom:24px;
+
+    border:1px solid rgba(140,100,255,0.15);
+
+    box-shadow:
+        0 0 20px rgba(140,100,255,0.08);
+
+    transition:all 0.25s ease;
+}
+
+.card:hover{
+    transform:translateY(2-px);
+
+    box-shadow:
+        0 0 30px rgba(138, 100, 250, 0.15);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:35px;
 }
 
 h1{
-    text-align:center;
+    font-size:42px;
+
+    margin-bottom:8px;
+
+    font-weight:700;
 }
+
+.subtitle{
+    color:#b69cff;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    letter-spacing:1px;
+
+    margin-top:0;
+}
+h1{
+    text-shadow:
+        0 0 15px rgba(140,100,255,0.25);
+}
+
+
 
 label{
     display:block;
@@ -38,35 +194,296 @@ label{
 
 input, select{
     width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:none;
-    background:#2b2b2b;
+
+    padding:12px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(140,100,255,0.15);
+
+    background:#1a1a22;
+
     color:white;
+
+    height:46px;
+
+    box-sizing:border-box;
+
+    font-family:'Inter', sans-serif;
+
+    transition:all 0.2s ease;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+
+    border-color:#8c64ff;
+
+    box-shadow:
+        0 0 12px rgba(140,100,255,0.25);
+}
+
+input:hover,
+select:hover{
+    border-color:rgba(140,100,255,0.35);
 }
 
 button{
+    margin-bottom:20px;
     width:100%;
-    padding:12px;
+    padding:14px;
+
     margin-top:20px;
+
     border:none;
-    border-radius:8px;
+
+    border-radius:16px;
+
     font-size:16px;
+
+    font-family:'Inter', sans-serif;
+
     cursor:pointer;
+
+    background:#7c4dff;
+
+    color:white;
+
+    transition:all 0.25s ease;
+}
+
+button:hover{
+    background:#9166ff;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(140,100,255,0.35);
 }
 
 .result{
     font-size:20px;
     margin-top:10px;
 }
+.resultCard{
+    text-align:center;
+}
+
+.resultTitle{
+    font-size:14px;
+
+    letter-spacing:2px;
+
+    color:#b69cff;
+
+    margin-bottom:15px;
+
+    font-weight:600;
+}
+
+.resultValue{
+    font-size:44px;
+
+    font-weight:700;
+}
+
+#resultsSection{
+    max-width:700px;
+    margin:40px auto 0 auto;
+}
+#resultsSection{
+    max-width:700px;
+    margin:40px auto 0 auto;
+}
+
+.fadeIn{
+    opacity:0;
+
+    transform:translateY(10px);
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+}
+
+.fadeIn.show{
+    opacity:1;
+
+    transform:translateY(0);
+}
+
+.advancedGrid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap:16px;
+
+    margin-top:20px;
+}
+
+.advancedCard{
+    background:#1a1a22;
+
+    border-radius:16px;
+
+    padding:16px;
+
+    text-align:center;
+
+    border:1px solid rgba(140,100,255,0.12);
+
+    transition:all 0.2s ease;
+}
+
+.advancedCard:hover{
+    border-color:rgba(140,100,255,0.35);
+
+    box-shadow:
+        0 0 15px rgba(140,100,255,0.12);
+}
+
+.advancedTitle{
+    color:#b69cff;
+
+    font-size:12px;
+
+    letter-spacing:1.5px;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+}
+
+.advancedValue{
+    font-size:20px;
+
+    font-weight:700;
+}
+
+
+
+
+.shinyButton:hover{
+    background:#e0b62f;
+
+    box-shadow:
+        0 0 20px rgba(255,215,0,0.35);
+
+    transform:translateY(-2px);
+}
+
+.shinyButton{
+    background:linear-gradient(
+        90deg,
+        #b8860b,
+        #d4a017,
+        #f4c542
+    );
+
+    color:white;
+
+    box-shadow:
+        0 0 15px rgba(255,215,0,0.20);
+}
+
+.shinyButton:hover{
+
+    background:linear-gradient(
+        90deg,
+        #c39212,
+        #e0b62f,
+        #ffd75e
+    );
+
+    box-shadow:
+        0 0 25px rgba(255,215,0,0.45);
+
+    transform:translateY(-2px);
+}
+
+.shinyCard{
+
+    border:1px solid rgba(255,215,0,0.35) !important;
+
+    box-shadow:
+        0 0 30px rgba(255,215,0,0.25),
+        0 0 60px rgba(255,215,0,0.10);
+
+}
+.shinyCard:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 35px rgba(255,215,0,0.30),
+        0 0 70px rgba(255,215,0,0.12);
+
+}
+.shinyTitle{
+
+    color:#f4c542 !important;
+
+    text-shadow:
+        0 0 10px rgba(255,215,0,0.4),
+        0 0 20px rgba(255,215,0,0.2);
+
+}
+.floatStar{
+
+    display:inline-block;
+
+    color:#f4c542;
+
+    animation:
+        floatStar 3s ease-in-out infinite;
+
+    text-shadow:
+        0 0 8px rgba(255,215,0,0.5);
+}
+
+@keyframes floatStar{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+    transform:translateY(-6px);
+}
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+.floatStar:last-child{
+    animation-delay:1.25s;
+}
+
+
+
+
 </style>
 </head>
+
+
 
 <body>
 
 <div class="container">
 
-<h1>Secret Grind Calculator</h1>
+    <img src="aw3-logo.png" class="logo">
+
+<div class="header">
+    <h1>Anime Warriors 3 Calculator</h1>
+    <p class="subtitle">
+        Secret Chance Calculator
+    </p>
+</div>
 
 <div class="card">
 
@@ -81,48 +498,38 @@ button{
     <option>Yoruichi</option>
 </select>
 
-<label>Base Luck</label>
+<label>
+    Base Luck
+
+    <span class="tooltip">
+        ⓘ
+
+        <span class="tooltipText">
+    Your luck before temporary boosts.
+
+    Pause your active luck potion to find your true base luck.
+</span>
+    </span>
+</label>
 <input id="baseLuck" type="number" value="15">
 
-<button onclick="toggleAdvanced()">
-    Advanced Info
-</button>
 
-<div class="card" id="advancedInfo" style="display:none;">
-
-    <h2>Advanced Info</h2>
-
-    <div class="result" id="expectedOpens">
-        Expected Opens: --
-    </div>
-
-    <div class="result" id="totalLuckDisplay">
-        Total Luck: --
-    </div>
-
-    <div class="result" id="speedMultiplierDisplay">
-        Speed Multiplier: --
-    </div>
-
-    <div class="result" id="openTimeDisplay">
-        Open Time: --
-    </div>
-
-    <div class="result" id="starsPerHourDisplay">
-        Stars Per Hour: --
-    </div>
-
-    <div class="result" id="luckPotionsNeeded">
-    Luck Potions Needed: --
-</div>
-
-<div class="result" id="speedPotionsNeeded">
-    Speed Potions Needed: --
-</div>
 
 </div>
 
-<label>Luck Potion</label>
+<label>
+    Luck Potion
+
+    <span class="tooltip">
+        ⓘ
+
+        <span class="tooltipText">
+            Enter your active luck potion separately from Base Luck.
+
+            This allows the calculator to determine potion requirements and other advanced statistics.
+        </span>
+    </span>
+</label>
 <select id="luckPotion">
     <option>None</option>
     <option>Luck Boost</option>
@@ -133,17 +540,47 @@ button{
     <option>Summer Luck III</option>
 </select>
 
-<label>
+<div class="checkboxRow">
     <input type="checkbox" id="secretGamepass">
-    Secret Gamepass (+50% Secret Chance)
-</label>
+
+    <label for="secretGamepass">
+        Secret Gamepass (+50% Secret Chance)
+    </label>
+</div>
+
+<div class="checkboxRow">
+    <input type="checkbox" id="vip">
+
+    <label for="vip">
+        VIP (-25% Star Cost)
+    </label>
+</div>
+
+
+
+<div class="checkboxRow">
+    <input type="checkbox" id="shinyHunter">
+
+    <label for="shinyHunter">
+        Shiny Hunter Gamepass (+5% Shiny Chance)
+    </label>
+</div>
 
 <label>
-    <input type="checkbox" id="vip">
-    VIP (-25% Star Cost)
-</label>
+    Playtime Boost
 
-<label>Playtime Boost</label>
+    <span class="tooltip">
+        ⓘ
+
+        <span class="tooltipText">
+            Your total permanent speed boost from Playtime Challenges.
+
+            To find it:
+
+            Awards → Challenges → Playtime
+        </span>
+    </span>
+</label>
 <select id="playtimeBoost">
     <option value="0">I (+0%)</option>
 <option value="0.05">II (+5%)</option>
@@ -153,7 +590,19 @@ button{
 <option value="0.55">VI (+55%)</option>
 </select>
 
-<label>Speed Potion</label>
+<label>
+    Speed Potion
+
+    <span class="tooltip">
+        ⓘ
+
+        <span class="tooltipText">
+            Select your currently active speed potion.
+
+            Speed potions reduce the time required to open stars.
+        </span>
+    </span>
+</label>
 <select id="speedPotion">
     <option value="0">None</option>
 
@@ -166,7 +615,23 @@ button{
     <option value="0.65">Summer Speed III (+65%)</option>
 </select>
 
-<label>Mastery</label>
+<label>
+    Mastery
+
+    <span class="tooltip">
+        ⓘ
+
+        <span class="tooltipText">
+            To find your mastery:
+
+            Open the star you are farming.
+
+            Click the star icon near the unit list.
+
+            Your mastery level will be displayed there.
+        </span>
+    </span>
+</label>
 <select id="mastery">
     <option value="0">None (+0%)</option>
     <option value="0.05">I (+5%)</option>
@@ -175,26 +640,166 @@ button{
     <option value="0.20">IV (+20%)</option>
 </select>
 
-<label>Open Amount</label>
+<label>
+    Open Amount
+
+    <span class="tooltip">
+        ⓘ
+
+        <span class="tooltipText">
+            The number of stars opened per animation cycle.
+
+            Higher values increase stars opened per hour.
+        </span>
+    </span>
+</label>
 <input id="openAmount" type="number" min="3" max="11" value="11">
-<button onclick="calculate()">Calculate</button>
-</div>
+<button onclick="calculate(false)">
+    Calculate
+</button>
 
-<div class="card">
-    <h2>Results</h2>
+<button class="shinyButton"
+        onclick="calculate(true)">
+    ✨ Calculate Shiny ✨
+</button>
 
-    <div class="result" id="secretOdds">
-    Secret Odds: --
-</div>
 
-    <div class="result" id="estimatedTime">
-    Estimated Time: --
-</div>
-
-    <div class="result" id="expectedCost">
-    Expected Cost: --
 
 </div>
+
+<div id="resultsSection">
+
+    <div class="card resultCard fadeIn"
+     id="oddsCard">
+
+        <div class="resultTitle">
+
+    <span id="oddsTitle">
+    SECRET ODDS
+</span>
+
+
+
+            <span class="tooltip">
+                ⓘ
+                <span class="tooltipText" id="oddsTooltip">
+    Average odds of obtaining the selected secret.
+
+    Actual results may vary due to RNG.
+</span>
+            </span>
+        </div>
+
+        <div class="resultValue" id="secretOdds">
+            --
+        </div>
+
+    </div>
+
+    <div class="card resultCard fadeIn"
+     id="timeCard">
+
+        <div class="resultTitle">
+
+    <span id="timeTitle">
+     ESTIMATED TIME  
+    </span>
+
+
+    
+
+            <span class="tooltip">
+                ⓘ
+                <span class="tooltipText" id="timeTooltip">
+                    Average time required to obtain the selected secret.
+
+                    Calculated using expected odds.
+</span>
+            </span>
+        </div>
+
+        <div class="resultValue" id="estimatedTime">
+            --
+        </div>
+
+    </div>
+
+    <div class="card resultCard fadeIn"
+     id="costCard">
+
+        <div class="resultTitle">
+
+    <span id="costTitle">
+        EXPECTED COST
+    </span>
+
+
+    
+    <span class="tooltip">
+        ⓘ
+        <span class="tooltipText" id="costTooltip">
+            Average currency required to obtain the selected secret.
+
+            Calculated using expected odds.
+
+            Actual results may vary.
+        </span>
+    </span>
+
+</div>
+
+        <div class="resultValue" id="expectedCost">
+            --
+        </div>
+
+    </div>
+
+
+<button onclick="toggleAdvanced()">
+    Advanced Info
+</button>
+
+<div class="card" id="advancedInfo" style="display:none;">
+
+    <h2>Advanced Info</h2>
+
+    <div class="advancedGrid">
+
+    <div class="advancedCard">
+        <div class="advancedTitle">EXPECTED OPENS</div>
+        <div class="advancedValue" id="expectedOpens">--</div>
+    </div>
+
+    <div class="advancedCard">
+        <div class="advancedTitle">TOTAL LUCK</div>
+        <div class="advancedValue" id="totalLuckDisplay">--</div>
+    </div>
+
+    <div class="advancedCard">
+        <div class="advancedTitle">SPEED MULTIPLIER</div>
+        <div class="advancedValue" id="speedMultiplierDisplay">--</div>
+    </div>
+
+    <div class="advancedCard">
+        <div class="advancedTitle">OPEN TIME</div>
+        <div class="advancedValue" id="openTimeDisplay">--</div>
+    </div>
+
+    <div class="advancedCard">
+        <div class="advancedTitle">STARS PER HOUR</div>
+        <div class="advancedValue" id="starsPerHourDisplay">--</div>
+    </div>
+
+    <div class="advancedCard">
+        <div class="advancedTitle">LUCK POTIONS</div>
+        <div class="advancedValue" id="luckPotionsNeeded">--</div>
+    </div>
+
+    <div class="advancedCard">
+        <div class="advancedTitle">SPEED POTIONS</div>
+        <div class="advancedValue" id="speedPotionsNeeded">--</div>
+    </div>
+
 </div>
 
 </div>
@@ -295,8 +900,10 @@ function toggleAdvanced() {
 
 }
 
-function calculate() {
 
+function calculate(isShiny = false) {
+
+    
     const secret = document.getElementById("secret").value;
     const baseLuck = Number(document.getElementById("baseLuck").value);
     const hasGamepass =
@@ -305,6 +912,8 @@ function calculate() {
 const hasVip =
     document.getElementById("vip").checked;
 
+const shinyHunter =
+    document.getElementById("shinyHunter").checked;
 const secretChance =
     hasGamepass ? 0.5 : 0;
 
@@ -337,6 +946,8 @@ const playtimeBoost =
 
 let odds;
 
+
+
 if (totalLuck < (14 - data.starLuck)) {
 
     odds = 100 /
@@ -356,6 +967,107 @@ if (totalLuck < (14 - data.starLuck)) {
         (1 + secretChance) *
         (1.7 + totalLuck * 0.05)
     );
+
+}
+if (isShiny) {
+
+    document
+    .querySelectorAll(".shinyStar")
+    .forEach(star => {
+        star.style.display = "inline-block";
+    });
+
+    const shinyChance =
+        document.getElementById("shinyHunter").checked
+            ? 0.05
+            : 0.02;
+
+    odds =
+        odds / shinyChance;
+
+}
+
+const oddsTitle =
+    document.getElementById("oddsTitle");
+
+const timeTitle =
+    document.getElementById("timeTitle");
+
+const costTitle =
+    document.getElementById("costTitle");
+    const oddsTooltip =
+    document.getElementById("oddsTooltip");
+
+const timeTooltip =
+    document.getElementById("timeTooltip");
+
+const costTooltip =
+    document.getElementById("costTooltip");
+    const oddsCard =
+    document.getElementById("oddsCard");
+
+const timeCard =
+    document.getElementById("timeCard");
+
+const costCard =
+    document.getElementById("costCard");
+
+if (isShiny) {
+oddsTooltip.innerHTML =
+    "Average odds of obtaining a shiny version of the selected secret.<br><br>Base shiny chance: 2%<br>Shiny Hunter: 5%";
+
+timeTooltip.innerHTML =
+    "Average time required to obtain a shiny version of the selected secret.";
+
+costTooltip.innerHTML =
+    "Average currency required to obtain a shiny version of the selected secret.";    
+oddsCard.classList.add("shinyCard");
+timeCard.classList.add("shinyCard");
+costCard.classList.add("shinyCard");
+    oddsTitle.innerHTML =
+    '<span class="floatStar">⭐</span> SHINY ODDS <span class="floatStar">⭐</span>';
+
+    timeTitle.innerHTML =
+    '<span class="floatStar">⭐</span> SHINY TIME <span class="floatStar">⭐</span>';
+
+   costTitle.innerHTML =
+    '<span class="floatStar">⭐</span> SHINY COST <span class="floatStar">⭐</span>';
+
+    oddsTitle.classList.add("shinyTitle");
+    timeTitle.classList.add("shinyTitle");
+    costTitle.classList.add("shinyTitle");
+
+} else {
+
+    document
+    .querySelectorAll(".shinyStar")
+    .forEach(star => {
+        star.style.display = "none";
+    });
+
+    oddsTooltip.innerHTML =
+    "Average odds of obtaining the selected secret.<br><br>Actual results may vary due to RNG.";
+
+timeTooltip.innerHTML =
+    "Average time required to obtain the selected secret.<br><br>Calculated using expected odds.";
+
+costTooltip.innerHTML =
+    "Average currency required to obtain the selected secret.<br><br>Calculated using expected odds.<br><br>Actual results may vary.";
+oddsCard.classList.remove("shinyCard");
+timeCard.classList.remove("shinyCard");
+costCard.classList.remove("shinyCard");
+    oddsTitle.innerHTML =
+        "SECRET ODDS";
+
+    timeTitle.innerHTML =
+        "ESTIMATED TIME";
+
+    costTitle.innerHTML =
+        "EXPECTED COST";
+
+    oddsTitle.classList.remove("shinyTitle");
+    timeTitle.classList.remove("shinyTitle");
+    costTitle.classList.remove("shinyTitle");
 
 }
 
@@ -383,20 +1095,18 @@ const expectedCost =
 if (secret === "Yoruichi") {
 
     document.getElementById("expectedCost").innerText =
-        "Expected Cost: " +
-        Math.round(expectedCost).toLocaleString() +
-        " Seashells";
+    formatMoney(expectedCost).replace("$","") +
+" Seashells";
 
 } else {
 
     document.getElementById("expectedCost").innerText =
-        "Expected Cost: " +
-        formatMoney(expectedCost);
-
+    formatMoney(expectedCost);
+       
 }
 
 document.getElementById("secretOdds").innerText =
-    "Secret Odds: 1 in " + Math.round(odds).toLocaleString();
+    "1 in " + Math.round(odds).toLocaleString();
     
     const days = Math.floor(estimatedHours / 24);
 
@@ -420,26 +1130,21 @@ if (days > 0) {
 }
 
 document.getElementById("estimatedTime").innerText =
-    "Estimated Time: " + timeText;
+    timeText;
 
 document.getElementById("expectedOpens").innerText =
-    "Expected Opens: " +
     Math.round(odds).toLocaleString();
 
 document.getElementById("totalLuckDisplay").innerText =
-    "Total Luck: " +
     totalLuck;
 
 document.getElementById("speedMultiplierDisplay").innerText =
-    "Speed Multiplier: " +
     speedMultiplier.toFixed(2) + "x";
 
 document.getElementById("openTimeDisplay").innerText =
-    "Open Time: " +
     adjustedOpenTime.toFixed(2) + "s";
 
 document.getElementById("starsPerHourDisplay").innerText =
-    "Stars Per Hour: " +
     Math.round(starsPerHour).toLocaleString();
 
     const potionsNeeded =
@@ -448,29 +1153,48 @@ document.getElementById("starsPerHourDisplay").innerText =
 if (potionName === "None") {
 
     document.getElementById("luckPotionsNeeded").innerText =
-        "Luck Potions Needed: N/A";
+    "N/A";
 
 } else {
 
     document.getElementById("luckPotionsNeeded").innerText =
-        "Luck Potions Needed: " +
-        potionsNeeded.toLocaleString();
+    potionsNeeded.toLocaleString();
 
 }
 
 if (speedPotion === 0) {
 
     document.getElementById("speedPotionsNeeded").innerText =
-        "Speed Potions Needed: N/A";
+        "N/A";
 
 } else {
 
     document.getElementById("speedPotionsNeeded").innerText =
-        "Speed Potions Needed: " +
         potionsNeeded.toLocaleString();
 
 }
+
+document
+    .querySelectorAll(".resultCard")
+    .forEach(card => {
+
+        card.classList.remove("show");
+
+        void card.offsetWidth;
+
+        card.classList.add("show");
+
+    });
+
 }
+const results =
+    document.getElementById("resultsSection");
+
+results.classList.remove("show");
+
+void results.offsetWidth;
+
+results.classList.add("show");
 
 
 </script>
